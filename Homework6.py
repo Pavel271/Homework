@@ -4,8 +4,10 @@ print(my_dict['Павел'])
 my_dict.update({'Василий': 2000,
                'Виктор': 1980})
 print(my_dict)
-del my_dict['Пётр']
+my_dict.pop('Пётр')
 print(my_dict)
+print(my_dict.get('Даниил'))
+
 
 my_set = {1, 1, 2, 2, 'String', 'String', (1, 2, 3)}
 print(my_set)
