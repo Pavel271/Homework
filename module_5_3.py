@@ -37,12 +37,10 @@ class House:
             return self
 
     def __radd__(self, value):
-        if isinstance(value, int):
             self.number_of_floors += value
             return self
 
     def __iadd__(self, value):
-        if isinstance(value, int):
             self.number_of_floors += value
             return self
 
