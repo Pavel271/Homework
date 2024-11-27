@@ -1,7 +1,6 @@
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher.filters.state import State, StatesGroup
-from aiogram.dispatcher import FSMContext
 
 api = ''
 bot = Bot(token = api)
@@ -41,24 +40,13 @@ async def all_message(message):
 
 @dp.message_handler(state=UserState.weight)
 async def send_calories(message, state):
-    await state.update_data(weight=message.text)
+    await state.update_data(weight=int(message.text))
     data = await state.get_data()
-
-    try:
-        age = float(data['age'])
-        weight = float(data['weight'])
-        growth = float(data['growth'])
-    except:
-        await message.answer(f'Не могу конвертировать введенные значения в числа.')
-        await state.finish()
-        return
-
-# для мужчин
-    calories_man = 10 * weight + 6.25 * growth - 5 * age + 5
-# для женщин
-    calories_wom = 10 * weight + 6.25 * growth - 5 * age - 161
-    await message.answer(f'Норма (муж.): {calories_man} ккал')
-    await message.answer(f'Норма (жен.): {calories_wom} ккал')
+    age = data['age']
+    growth = data['growth']
+    weight = data['weight']
+    calories = 10 * weight + 6.25 * growth - 5 * age + 5
+    await message.answer(f"Ваша дневная норма калорий: {calories} ккал")
     await state.finish()
 
 if __name__ == '__main__':
