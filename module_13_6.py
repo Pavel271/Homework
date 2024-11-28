@@ -29,9 +29,7 @@ async def main_menu(message):
 
 @dp.callback_query_handler(text='formulas')
 async def get_formulas(call):
-    await call.message.answer('Формулы расчета:\n'
-                                        '1. Для мужчин: (10 x вес + 6,25 x рост – 5 x возраст + 5)\n'
-                                        '2. Для женщин: (10 x вес + 6,25 x рост – 5 x возраст – 161)')
+    await call.message.answer('Формулы расчета: (10 x вес(кг) + 6,25 x рост(см) – 5 x возраст(г) - 161)')
     await call.answer()
 
 @dp.message_handler(commands=['start'])
@@ -67,7 +65,7 @@ async def send_calories(message, state):
     age = data['age']
     growth = data['growth']
     weight = data['weight']
-    calories = 10 * weight + 6.25 * growth - 5 * age + 5
+    calories = 10 * weight + 6.25 * growth - 5 * age - 161
     await message.answer(f"Ваша дневная норма калорий: {calories} ккал")
     await state.finish()
 
