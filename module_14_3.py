@@ -4,7 +4,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-api = '7850022438:AAHTiWhNltW39eYkj41UUslFTLRg10ckeu4'
+api = ''
 bot = Bot(token=api)
 dp = Dispatcher(bot, storage=MemoryStorage())
 #
@@ -17,10 +17,10 @@ kp.insert(button2)
 kp.insert(button3)
 
 kb = InlineKeyboardMarkup(resize_keyboard=True)
-button_1 = InlineKeyboardButton(text='1). Комплекс витаминов B', callback_data='product_buying')
-button_2 = InlineKeyboardButton(text='2). Omega-3', callback_data='product_buying')
-button_3 = InlineKeyboardButton(text='3). Комплекс витаминов C', callback_data='product_buying')
-button_4 = InlineKeyboardButton(text='4). Витамины D-3', callback_data='product_buying')
+button_1 = InlineKeyboardButton(text='Product1', callback_data='product_buying')
+button_2 = InlineKeyboardButton(text='Product2', callback_data='product_buying')
+button_3 = InlineKeyboardButton(text='Product3', callback_data='product_buying')
+button_4 = InlineKeyboardButton(text='Product4', callback_data='product_buying')
 kb.insert(button_1)
 kb.insert(button_2)
 kb.insert(button_3)
