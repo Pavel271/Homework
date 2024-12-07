@@ -5,7 +5,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from crud_functions import *
 
-api = ''
+api = '7850022438:AAHTiWhNltW39eYkj41UUslFTLRg10ckeu4'
 bot = Bot(token=api)
 dp = Dispatcher(bot, storage=MemoryStorage())
 
@@ -16,7 +16,7 @@ kp = ReplyKeyboardMarkup(resize_keyboard=True)
 button = KeyboardButton(text='Рассчитать')
 button2 = KeyboardButton(text='Информация')
 button3 = KeyboardButton(text='Купить')
-button4 = KeyboardButton(text='Регистрация'),
+button4 = KeyboardButton(text='Регистрация')
 kp.insert(button)
 kp.insert(button2)
 kp.insert(button3)
@@ -51,8 +51,8 @@ async def sing_up(message):
 
 @dp.message_handler(state=RegistrationState.username)
 async def set_username(message, state):
-    if is_included(message.text):
-        await state.update_data(usnam=message.text)
+    if not is_included(message.text):
+        await state.update_data(username=message.text)
         await message.answer("Введите свой email:")
         await RegistrationState.email.set()
     else:
@@ -61,21 +61,31 @@ async def set_username(message, state):
 
 @dp.message_handler(state=RegistrationState.email)
 async def set_email(message, state):
-    await state.update_data(email=message.text)
-    await message.answer('Введите свой возраст:')
-    await RegistrationState.age.set()
+    if is_included(message.text):
+        await state.update_data(email=message.text)
+        await message.answer('Введите свой возраст:')
+        await RegistrationState.age.set()
+    else:
+        await message.answer("Некорректный email. Попробуйте еще раз.")
+        await RegistrationState.email.set()
 
 @dp.message_handler(state=RegistrationState.age)
 async def set_age(message, state):
     age = message.text
-    await state.update_data(age=age)
-    user_data = await state.get_data()
-    username = user_data.get('username')
-    email = user_data.get('email')
-    age = user_data.get('age')
-    add_user(username=username, email=email, age=age)
-    await state.finish()
-    await message.answer('Регистрация завершена.')
+    if age.isdigit() and 0 < int(age) < 150:
+        await state.update_data(age=age)
+        user_data = await state.get_data()
+        username = user_data.get('username')
+        email = user_data.get('email')
+        age = user_data.get('age')
+        print(f"Username: {username}, Email: {email}, Age: {age}")
+        if username and is_included(username=username):
+            await message.answer("Пользователь с таким именем или email уже существует.")
+            await state.finish()
+        else:
+            add_user(username=username, email=email, age=age)
+            await state.finish()
+            await message.answer('Регистрация завершена.')
 
 @dp.message_handler(text='Купить')
 async def get_buying_list(message):
