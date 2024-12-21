@@ -14,7 +14,7 @@ class User(BaseModel):
 def get_users():
     return users
 
-@app.post('/user', response_model=User)
+@app.post('/user/{username}/{age}', response_model=User )
 def create_user(username: str, age: int):
     user_id = (users[-1].id + 1) if users else 1
     new_user = User(id=user_id, username=username, age=age)
